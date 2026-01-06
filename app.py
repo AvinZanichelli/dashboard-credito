@@ -8,7 +8,7 @@ from datetime import datetime
 # CONFIGURAÇÃO DA PÁGINA
 # ============================================================
 st.set_page_config(
-    page_title="Dashboard de Crédito - Trinus",
+    page_title="Dashboard de Crédito",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -183,7 +183,7 @@ if 'periodo' in dir() and len(periodo) == 2:
 # CABEÇALHO PRINCIPAL
 # ============================================================
 st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Trinus.Co - Análise de Risco | Atualizado em: ' + datetime.now().strftime('%d/%m/%Y') + '</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Análise de Risco | Atualizado em: ' + datetime.now().strftime('%d/%m/%Y') + '</p>', unsafe_allow_html=True)
 
 # ============================================================
 # MÉTRICAS PRINCIPAIS (KPIs)
@@ -410,7 +410,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center; color: #6B7280; padding: 1rem;'>
-        📊 Dashboard de Crédito | Desenvolvido para Trinus.Co | 
+        📊 Dashboard de Crédito | 
         Dados atualizados conforme planilha carregada
     </div>
     """,
