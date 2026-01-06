@@ -116,8 +116,15 @@ def carregar_dados(arquivo):
 # ============================================================
 # CARREGAR DADOS
 # ============================================================
-# Caminho do arquivo no repositório
-ARQUIVO_PADRAO = 'data/0 - Compilado Relatórios de Crédito.xlsx'
+# Possíveis nomes do arquivo no repositório
+ARQUIVOS_POSSIVEIS = [
+    'data/0 - Compilado Relatórios de Crédito.xlsx',
+    'data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
+    'data/0-Compilado Relatórios de Crédito.xlsx',
+    'data/base_credito.xlsx',
+    '0 - Compilado Relatórios de Crédito.xlsx',
+    '0_-_Compilado_Relatórios_de_Crédito.xlsx'
+]
 
 # Sidebar
 with st.sidebar:
@@ -138,15 +145,34 @@ with st.sidebar:
 
 # Carregar dados
 df = None
+erro_msg = None
+
 if arquivo_upload:
-    df = carregar_dados(arquivo_upload)
-    st.sidebar.success("✅ Planilha alternativa carregada!")
-else:
     try:
-        df = carregar_dados(ARQUIVO_PADRAO)
-        st.sidebar.success("✅ Dados carregados automaticamente!")
+        df = carregar_dados(arquivo_upload)
+        st.sidebar.success("✅ Planilha alternativa carregada!")
     except Exception as e:
-        st.sidebar.error(f"❌ Erro ao carregar: {e}")
+        erro_msg = f"Erro no upload: {e}"
+else:
+    # Tentar carregar de diferentes caminhos possíveis
+    import os
+    for arquivo in ARQUIVOS_POSSIVEIS:
+        if os.path.exists(arquivo):
+            try:
+                df = carregar_dados(arquivo)
+                st.sidebar.success(f"✅ Dados carregados!")
+                break
+            except Exception as e:
+                erro_msg = f"Arquivo encontrado mas erro ao ler: {e}"
+    
+    if df is None and erro_msg is None:
+        # Listar arquivos disponíveis para debug
+        arquivos_encontrados = []
+        if os.path.exists('data'):
+            arquivos_encontrados = os.listdir('data')
+        elif os.path.exists('.'):
+            arquivos_encontrados = [f for f in os.listdir('.') if f.endswith('.xlsx')]
+        erro_msg = f"Arquivo não encontrado. Arquivos na pasta: {arquivos_encontrados}"
 
 # ============================================================
 # VERIFICAR SE HÁ DADOS
@@ -154,8 +180,10 @@ else:
 if df is None:
     st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
-    st.error("❌ Não foi possível carregar os dados. Verifique se o arquivo `data/0 - Compilado Relatórios de Crédito.xlsx` existe no repositório.")
-    st.info("👈 Ou marque a opção 'Carregar outra planilha' na barra lateral.")
+    st.error(f"❌ Não foi possível carregar os dados.")
+    if erro_msg:
+        st.warning(f"Detalhe: {erro_msg}")
+    st.info("👈 Marque a opção 'Carregar outra planilha' na barra lateral para fazer upload manual.")
     st.stop()
 
 # ============================================================
