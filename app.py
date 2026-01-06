@@ -117,7 +117,7 @@ def carregar_dados(arquivo):
 # CARREGAR DADOS
 # ============================================================
 # Caminho do arquivo no repositório
-ARQUIVO_PADRAO = 'data/base_credito.xlsx'
+ARQUIVO_PADRAO = 'data/0 - Compilado Relatórios de Crédito.xlsx'
 
 # Sidebar
 with st.sidebar:
