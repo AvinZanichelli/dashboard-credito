@@ -61,11 +61,26 @@ def carregar_dados(arquivo):
     """Carrega e trata os dados da planilha"""
     df = pd.read_excel(arquivo, sheet_name='Relatórios de Crédito')
     
-    # Renomear colunas para facilitar
-    df.columns = ['ID', 'Empresa_Base', 'Relatorio', 'Tipo', 'Data', 'Rating', 'Opiniao', 'Conclusao']
+    # Renomear colunas de forma flexível (mapeia nomes antigos para novos)
+    colunas_map = {
+        '##': 'ID',
+        'Nome da Empresa na Base': 'Empresa_Base',
+        'Relatórios Enviados': 'Relatorio',
+        'Empresa / Emissão': 'Tipo',
+        'Data de Envio': 'Data',
+        'Rating - X/100': 'Rating',
+        'Opinião - Independente de pontuação de Rating': 'Opiniao',
+        'Conclusão': 'Conclusao'
+    }
+    df = df.rename(columns=colunas_map)
     
     # Preencher nome da empresa quando vazio
-    df['Empresa'] = df['Relatorio'].fillna(df['Empresa_Base'])
+    if 'Relatorio' in df.columns and 'Empresa_Base' in df.columns:
+        df['Empresa'] = df['Relatorio'].fillna(df['Empresa_Base'])
+    elif 'Relatorio' in df.columns:
+        df['Empresa'] = df['Relatorio']
+    else:
+        df['Empresa'] = df.iloc[:, 1].fillna(df.iloc[:, 0])
     
     # Criar faixas de rating
     def faixa_rating(r):
