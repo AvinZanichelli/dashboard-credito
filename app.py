@@ -128,7 +128,7 @@ with st.sidebar:
 # ============================================================
 if df is None:
     st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Trinus.Co - Análise de Risco</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
     st.info("👈 Faça upload da planilha de relatórios de crédito na barra lateral para começar.")
     st.stop()
 
