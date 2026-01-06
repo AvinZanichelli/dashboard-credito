@@ -120,8 +120,10 @@ def carregar_dados(arquivo):
 ARQUIVOS_POSSIVEIS = [
     'data/0 - Compilado Relatórios de Crédito.xlsx',
     'data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
+    'data/0 - Compilado Relatórios de Crédito.xlsx',
     'data/0-Compilado Relatórios de Crédito.xlsx',
     'data/base_credito.xlsx',
+    '0 - Compilado Relatórios de Crédito.xlsx',
     '0 - Compilado Relatórios de Crédito.xlsx',
     '0_-_Compilado_Relatórios_de_Crédito.xlsx'
 ]
