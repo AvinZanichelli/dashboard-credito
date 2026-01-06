@@ -154,7 +154,7 @@ else:
 if df is None:
     st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
-    st.error("❌ Não foi possível carregar os dados. Verifique se o arquivo `data/base_credito.xlsx` existe no repositório.")
+    st.error("❌ Não foi possível carregar os dados. Verifique se o arquivo `data/0 - Compilado Relatórios de Crédito.xlsx` existe no repositório.")
     st.info("👈 Ou marque a opção 'Carregar outra planilha' na barra lateral.")
     st.stop()
 
