@@ -143,7 +143,7 @@ with st.sidebar:
 # ============================================================
 if df is None:
     st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Trinus.Co - Análise de Risco</p>', unsafe_allow_html=True)
     st.info("👈 Faça upload da planilha de relatórios de crédito na barra lateral para começar.")
     st.stop()
 
@@ -312,64 +312,36 @@ with col_graf2:
     st.plotly_chart(fig_faixa, use_container_width=True)
 
 # ============================================================
-# GRÁFICOS - LINHA 2
+# GRÁFICO - RATING POR EMPRESA (LARGURA TOTAL)
 # ============================================================
-col_graf3, col_graf4 = st.columns(2)
+st.markdown("### 🎯 Rating por Empresa")
 
-# Gráfico 3: Scatter Rating x Opinião
-with col_graf3:
-    st.markdown("### 🎯 Rating por Empresa")
-    
-    df_com_rating = df_filtrado[df_filtrado['Rating'].notna()].copy()
-    
-    if len(df_com_rating) > 0:
-        fig_scatter = px.bar(
-            df_com_rating.sort_values('Rating', ascending=True),
-            x='Rating',
-            y='Empresa',
-            color='Opiniao_Agregada',
-            color_discrete_map=cores_opiniao,
-            orientation='h',
-            hover_data=['Tipo', 'Opiniao', 'Data']
-        )
-        fig_scatter.update_layout(
-            yaxis_title="",
-            xaxis_title="Rating (0-100)",
-            legend_title="Opinião",
-            margin=dict(t=20, b=20, l=20, r=20),
-            height=400
-        )
-        st.plotly_chart(fig_scatter, use_container_width=True)
-    else:
-        st.info("Nenhum dado com rating disponível para os filtros selecionados.")
+df_com_rating = df_filtrado[df_filtrado['Rating'].notna()].copy()
 
-# Gráfico 4: Timeline de análises
-with col_graf4:
-    st.markdown("### 📅 Timeline de Análises")
+if len(df_com_rating) > 0:
+    # Calcular altura dinâmica baseada no número de empresas
+    num_empresas = len(df_com_rating)
+    altura_grafico = max(500, num_empresas * 35)
     
-    timeline = df_filtrado.groupby('Mes_Ano').size().reset_index(name='Quantidade')
-    timeline = timeline.sort_values('Mes_Ano')
-    
-    if len(timeline) > 0:
-        fig_timeline = px.line(
-            timeline,
-            x='Mes_Ano',
-            y='Quantidade',
-            markers=True
-        )
-        fig_timeline.update_traces(
-            line_color='#667eea',
-            marker=dict(size=10, color='#764ba2')
-        )
-        fig_timeline.update_layout(
-            xaxis_title="Período",
-            yaxis_title="Quantidade de Análises",
-            margin=dict(t=20, b=20, l=20, r=20),
-            height=400
-        )
-        st.plotly_chart(fig_timeline, use_container_width=True)
-    else:
-        st.info("Dados insuficientes para timeline.")
+    fig_scatter = px.bar(
+        df_com_rating.sort_values('Rating', ascending=True),
+        x='Rating',
+        y='Empresa',
+        color='Opiniao_Agregada',
+        color_discrete_map=cores_opiniao,
+        orientation='h',
+        hover_data=['Tipo', 'Opiniao', 'Data']
+    )
+    fig_scatter.update_layout(
+        yaxis_title="",
+        xaxis_title="Rating (0-100)",
+        legend_title="Opinião",
+        margin=dict(t=20, b=20, l=20, r=20),
+        height=altura_grafico
+    )
+    st.plotly_chart(fig_scatter, use_container_width=True)
+else:
+    st.info("Nenhum dado com rating disponível para os filtros selecionados.")
 
 st.markdown("---")
 
