@@ -118,11 +118,11 @@ def carregar_dados(arquivo):
 # ============================================================
 # Possíveis nomes do arquivo no repositório
 ARQUIVOS_POSSIVEIS = [
-    'data/0 - Compilado Relatórios de Crédito.xlsx',
-    'data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
-    'data/0 - Compilado Relatórios de Crédito.xlsx',
-    'data/0-Compilado Relatórios de Crédito.xlsx',
-    'data/base_credito.xlsx',
+    'Data/0 - Compilado Relatórios de Crédito.xlsx',
+    'Data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
+    'Data/0 - Compilado Relatórios de Crédito.xlsx',
+    'Data/0-Compilado Relatórios de Crédito.xlsx',
+    'Data/base_credito.xlsx',
     '0 - Compilado Relatórios de Crédito.xlsx',
     '0 - Compilado Relatórios de Crédito.xlsx',
     '0_-_Compilado_Relatórios_de_Crédito.xlsx'
