@@ -116,35 +116,46 @@ def carregar_dados(arquivo):
 # ============================================================
 # CARREGAR DADOS
 # ============================================================
-# Tentar carregar arquivo local ou permitir upload
-try:
-    df = carregar_dados('data/base_credito.xlsx')
-except:
-    df = None
+# Caminho do arquivo no repositório
+ARQUIVO_PADRAO = 'data/base_credito.xlsx'
 
-# Sidebar para upload
+# Sidebar
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/combo-chart.png", width=60)
     st.markdown("## 📊 Dashboard de Crédito")
     st.markdown("---")
     
-    arquivo_upload = st.file_uploader(
-        "📁 Carregar planilha",
-        type=['xlsx'],
-        help="Faça upload da planilha de relatórios de crédito"
-    )
+    # Opção de upload alternativo
+    usar_upload = st.checkbox("📁 Carregar outra planilha", value=False)
     
-    if arquivo_upload:
-        df = carregar_dados(arquivo_upload)
-        st.success("✅ Dados carregados!")
+    arquivo_upload = None
+    if usar_upload:
+        arquivo_upload = st.file_uploader(
+            "Selecione o arquivo",
+            type=['xlsx'],
+            help="Faça upload de uma planilha alternativa"
+        )
+
+# Carregar dados
+df = None
+if arquivo_upload:
+    df = carregar_dados(arquivo_upload)
+    st.sidebar.success("✅ Planilha alternativa carregada!")
+else:
+    try:
+        df = carregar_dados(ARQUIVO_PADRAO)
+        st.sidebar.success("✅ Dados carregados automaticamente!")
+    except Exception as e:
+        st.sidebar.error(f"❌ Erro ao carregar: {e}")
 
 # ============================================================
 # VERIFICAR SE HÁ DADOS
 # ============================================================
 if df is None:
     st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Trinus.Co - Análise de Risco</p>', unsafe_allow_html=True)
-    st.info("👈 Faça upload da planilha de relatórios de crédito na barra lateral para começar.")
+    st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
+    st.error("❌ Não foi possível carregar os dados. Verifique se o arquivo `data/base_credito.xlsx` existe no repositório.")
+    st.info("👈 Ou marque a opção 'Carregar outra planilha' na barra lateral.")
     st.stop()
 
 # ============================================================
