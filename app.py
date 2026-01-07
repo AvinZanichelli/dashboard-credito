@@ -516,84 +516,20 @@ df_tabela = df_filtrado[['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa_Rating', 'O
 df_tabela['Data'] = pd.to_datetime(df_tabela['Data']).dt.strftime('%d/%m/%Y')
 df_tabela.columns = ['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa', 'Opinião', 'Opinião Detalhada']
 
-# Criar função para gerar barra de progresso HTML
-def criar_barra_rating(valor):
-    if pd.isna(valor):
-        return ''
-    largura = min(100, max(0, valor))
-    return f'''
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <div style="flex-grow: 1; background-color: #E5E7EB; border-radius: 4px; height: 8px; min-width: 80px;">
-            <div style="width: {largura}%; background-color: #4A7C59; height: 100%; border-radius: 4px;"></div>
-        </div>
-        <span style="font-size: 12px; color: #2D2D2D; min-width: 30px;">{int(valor)}</span>
-    </div>
-    '''
-
-# Criar HTML da tabela
-def gerar_tabela_html(df):
-    html = '''
-    <style>
-        .tabela-credito {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-        }
-        .tabela-credito th {
-            background-color: #F9FAFB;
-            color: #6B7280;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 2px solid #E5E7EB;
-        }
-        .tabela-credito td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #F3F4F6;
-            color: #2D2D2D;
-        }
-        .tabela-credito tr:hover {
-            background-color: #F9FAFB;
-        }
-    </style>
-    <table class="tabela-credito">
-        <thead>
-            <tr>
-                <th>Empresa</th>
-                <th>Tipo</th>
-                <th>Data</th>
-                <th style="min-width: 150px;">Rating</th>
-                <th>Faixa</th>
-                <th>Opinião</th>
-                <th>Opinião Detalhada</th>
-            </tr>
-        </thead>
-        <tbody>
-    '''
-    
-    for _, row in df.iterrows():
-        rating_html = criar_barra_rating(row['Rating']) if pd.notna(row['Rating']) else '-'
-        html += f'''
-            <tr>
-                <td>{row['Empresa']}</td>
-                <td>{row['Tipo']}</td>
-                <td>{row['Data']}</td>
-                <td>{rating_html}</td>
-                <td>{row['Faixa']}</td>
-                <td>{row['Opinião']}</td>
-                <td>{row['Opinião Detalhada'] if pd.notna(row['Opinião Detalhada']) else '-'}</td>
-            </tr>
-        '''
-    
-    html += '</tbody></table>'
-    return html
-
-# Renderizar tabela customizada
-st.markdown(gerar_tabela_html(df_tabela), unsafe_allow_html=True)
+# Configurar exibição
+st.dataframe(
+    df_tabela,
+    use_container_width=True,
+    height=400,
+    column_config={
+        "Rating": st.column_config.NumberColumn(
+            "Rating",
+            help="Rating de 0 a 100",
+            format="%.0f"
+        ),
+        "Data": st.column_config.TextColumn("Data"),
+    }
+)
 
 # ============================================================
 # DETALHES EXPANDÍVEIS
