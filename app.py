@@ -406,6 +406,10 @@ with col_graf2:
         'Sem Rating': '#D1D5DB'      # Cinza claro
     }
     
+    # Calcular valor máximo do eixo Y (maior valor + 5)
+    max_valor = faixa_counts['Quantidade'].max()
+    eixo_y_max = max_valor + 5
+    
     fig_faixa = px.bar(
         faixa_counts,
         x='Faixa',
@@ -430,7 +434,7 @@ with col_graf2:
         plot_bgcolor='rgba(0,0,0,0)',
         font=dict(family='Inter', color='#2D2D2D'),
         xaxis=dict(showgrid=False, showline=True, linecolor='#E5E7EB'),
-        yaxis=dict(showgrid=True, gridcolor='#F3F4F6', showline=False)
+        yaxis=dict(showgrid=True, gridcolor='#F3F4F6', showline=False, range=[0, eixo_y_max])
     )
     st.plotly_chart(fig_faixa, use_container_width=True)
 
