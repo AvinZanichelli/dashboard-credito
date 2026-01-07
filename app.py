@@ -15,41 +15,106 @@ st.set_page_config(
 )
 
 # ============================================================
-# ESTILOS CSS CUSTOMIZADOS
+# ESTILOS CSS CUSTOMIZADOS - PADRÃO AVIN
 # ============================================================
 st.markdown("""
 <style>
+    /* Importar fonte */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Reset e base */
+    .stApp {
+        background-color: #FAFAFA;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Header principal */
     .main-header {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #1E3A5F;
-        margin-bottom: 0.5rem;
-    }
-    .sub-header {
-        font-size: 1.1rem;
-        color: #6B7280;
-        margin-bottom: 2rem;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 12px;
-        color: white;
-        text-align: center;
-    }
-    .stMetric {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
-    }
-    div[data-testid="stMetricValue"] {
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 600;
+        color: #8B7355;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.5px;
     }
-    .rating-alto { color: #10B981; font-weight: bold; }
-    .rating-medio { color: #F59E0B; font-weight: bold; }
-    .rating-baixo { color: #EF4444; font-weight: bold; }
+    
+    .sub-header {
+        font-size: 0.95rem;
+        color: #6B7280;
+        margin-bottom: 1.5rem;
+        font-weight: 400;
+    }
+    
+    /* Cards de métricas */
+    div[data-testid="stMetric"] {
+        background: white;
+        padding: 1.25rem;
+        border-radius: 8px;
+        border: 1px solid #E5E7EB;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    
+    div[data-testid="stMetricLabel"] {
+        font-size: 0.8rem;
+        color: #6B7280;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    div[data-testid="stMetricValue"] {
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #2D2D2D;
+    }
+    
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #FFFFFF;
+        border-right: 1px solid #E5E7EB;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown h2 {
+        color: #8B7355;
+        font-weight: 600;
+    }
+    
+    /* Títulos de seção */
+    .stMarkdown h3 {
+        color: #8B7355;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #E5E7EB;
+    }
+    
+    /* Expanders */
+    .streamlit-expanderHeader {
+        background-color: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        font-weight: 500;
+        color: #2D2D2D;
+    }
+    
+    /* Dataframe */
+    .stDataFrame {
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+    }
+    
+    /* Remover bordas extras */
+    .block-container {
+        padding-top: 2rem;
+    }
+    
+    /* Dividers */
+    hr {
+        border: none;
+        border-top: 1px solid #E5E7EB;
+        margin: 1.5rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -118,24 +183,21 @@ def carregar_dados(arquivo):
 # ============================================================
 # Possíveis nomes do arquivo no repositório
 ARQUIVOS_POSSIVEIS = [
-    'Data/0 - Compilado Relatórios de Crédito.xlsx',
-    'Data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
-    'Data/0 - Compilado Relatórios de Crédito.xlsx',
-    'Data/0-Compilado Relatórios de Crédito.xlsx',
-    'Data/base_credito.xlsx',
-    '0 - Compilado Relatórios de Crédito.xlsx',
+    'data/0 - Compilado Relatórios de Crédito.xlsx',
+    'data/0_-_Compilado_Relatórios_de_Crédito.xlsx',
+    'data/0-Compilado Relatórios de Crédito.xlsx',
+    'data/base_credito.xlsx',
     '0 - Compilado Relatórios de Crédito.xlsx',
     '0_-_Compilado_Relatórios_de_Crédito.xlsx'
 ]
 
 # Sidebar
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/combo-chart.png", width=60)
-    st.markdown("## 📊 Dashboard de Crédito")
+    st.markdown("## Dashboard de Crédito")
     st.markdown("---")
     
     # Opção de upload alternativo
-    usar_upload = st.checkbox("📁 Carregar outra planilha", value=False)
+    usar_upload = st.checkbox("Carregar outra planilha", value=False)
     
     arquivo_upload = None
     if usar_upload:
@@ -180,19 +242,19 @@ else:
 # VERIFICAR SE HÁ DADOS
 # ============================================================
 if df is None:
-    st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
+    st.markdown('<p class="main-header">Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Análise de Risco</p>', unsafe_allow_html=True)
-    st.error(f"❌ Não foi possível carregar os dados.")
+    st.error(f"Não foi possível carregar os dados.")
     if erro_msg:
         st.warning(f"Detalhe: {erro_msg}")
-    st.info("👈 Marque a opção 'Carregar outra planilha' na barra lateral para fazer upload manual.")
+    st.info("Marque a opção 'Carregar outra planilha' na barra lateral para fazer upload manual.")
     st.stop()
 
 # ============================================================
 # FILTROS NA SIDEBAR
 # ============================================================
 with st.sidebar:
-    st.markdown("### 🎯 Filtros")
+    st.markdown("### Filtros")
     
     # Filtro por tipo
     tipos = ['Todos'] + list(df['Tipo'].dropna().unique())
@@ -238,8 +300,10 @@ if 'periodo' in dir() and len(periodo) == 2:
 # ============================================================
 # CABEÇALHO PRINCIPAL
 # ============================================================
-st.markdown('<p class="main-header">📊 Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Análise de Risco | Atualizado em: ' + datetime.now().strftime('%d/%m/%Y') + '</p>', unsafe_allow_html=True)
+col_header1, col_header2 = st.columns([3, 1])
+with col_header1:
+    st.markdown('<p class="main-header">Dashboard de Avaliações de Crédito</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Análise de Risco | Atualizado em: ' + datetime.now().strftime('%d/%m/%Y') + '</p>', unsafe_allow_html=True)
 
 # ============================================================
 # MÉTRICAS PRINCIPAIS (KPIs)
@@ -248,28 +312,28 @@ col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.metric(
-        label="📋 Total de Análises",
+        label="TOTAL DE ANÁLISES",
         value=len(df_filtrado)
     )
 
 with col2:
     empresas = len(df_filtrado[df_filtrado['Tipo'] == 'Empresa'])
     st.metric(
-        label="🏢 Empresas",
+        label="EMPRESAS",
         value=empresas
     )
 
 with col3:
     emissoes = len(df_filtrado[df_filtrado['Tipo'] == 'Emissão'])
     st.metric(
-        label="📄 Emissões",
+        label="EMISSÕES",
         value=emissoes
     )
 
 with col4:
     rating_medio = df_filtrado['Rating'].mean()
     st.metric(
-        label="⭐ Rating Médio",
+        label="RATING MÉDIO",
         value=f"{rating_medio:.1f}" if pd.notna(rating_medio) else "N/A"
     )
 
@@ -277,7 +341,7 @@ with col5:
     negativos = len(df_filtrado[df_filtrado['Opiniao_Agregada'] == 'Negativo'])
     pct_neg = (negativos / len(df_filtrado) * 100) if len(df_filtrado) > 0 else 0
     st.metric(
-        label="⚠️ % Negativos",
+        label="% NEGATIVOS",
         value=f"{pct_neg:.1f}%"
     )
 
@@ -290,18 +354,18 @@ col_graf1, col_graf2 = st.columns(2)
 
 # Gráfico 1: Distribuição por Opinião
 with col_graf1:
-    st.markdown("### 📊 Distribuição por Opinião")
+    st.markdown("### Distribuição por Opinião")
     
     opiniao_counts = df_filtrado['Opiniao_Agregada'].value_counts().reset_index()
     opiniao_counts.columns = ['Opinião', 'Quantidade']
     
     cores_opiniao = {
-        'Positivo': '#10B981',
-        'Neutro': '#6B7280',
-        'Negativo': '#EF4444',
-        'Atenção': '#F59E0B',
-        'Não Avaliado': '#9CA3AF',
-        'Outros': '#8B5CF6'
+        'Positivo': '#4A7C59',      # Verde escuro profissional
+        'Neutro': '#8B7355',        # Dourado AVIN
+        'Negativo': '#A85454',      # Vermelho sóbrio
+        'Atenção': '#C9A227',       # Amarelo mostarda
+        'Não Avaliado': '#9CA3AF',  # Cinza neutro
+        'Outros': '#6B7280'         # Cinza escuro
     }
     
     fig_opiniao = px.pie(
@@ -310,28 +374,36 @@ with col_graf1:
         names='Opinião',
         color='Opinião',
         color_discrete_map=cores_opiniao,
-        hole=0.4
+        hole=0.5
     )
-    fig_opiniao.update_traces(textposition='outside', textinfo='percent+label')
+    fig_opiniao.update_traces(
+        textposition='outside', 
+        textinfo='percent+label',
+        textfont_size=11,
+        marker=dict(line=dict(color='#FFFFFF', width=2))
+    )
     fig_opiniao.update_layout(
         showlegend=False,
-        margin=dict(t=20, b=20, l=20, r=20),
-        height=350
+        margin=dict(t=30, b=30, l=30, r=30),
+        height=350,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family='Inter', color='#2D2D2D')
     )
     st.plotly_chart(fig_opiniao, use_container_width=True)
 
 # Gráfico 2: Distribuição por Faixa de Rating
 with col_graf2:
-    st.markdown("### 📈 Distribuição por Faixa de Rating")
+    st.markdown("### Distribuição por Faixa de Rating")
     
     faixa_counts = df_filtrado['Faixa_Rating'].value_counts().reset_index()
     faixa_counts.columns = ['Faixa', 'Quantidade']
     
     cores_faixa = {
-        'Alto (≥80)': '#10B981',
-        'Médio (65-79)': '#F59E0B',
-        'Baixo (<65)': '#EF4444',
-        'Sem Rating': '#9CA3AF'
+        'Alto (≥80)': '#4A7C59',     # Verde escuro
+        'Médio (65-79)': '#C9A227',  # Amarelo mostarda
+        'Baixo (<65)': '#A85454',    # Vermelho sóbrio
+        'Sem Rating': '#D1D5DB'      # Cinza claro
     }
     
     fig_faixa = px.bar(
@@ -342,43 +414,86 @@ with col_graf2:
         color_discrete_map=cores_faixa,
         text='Quantidade'
     )
-    fig_faixa.update_traces(textposition='outside')
+    fig_faixa.update_traces(
+        textposition='outside',
+        textfont_size=12,
+        marker_line_color='#FFFFFF',
+        marker_line_width=1
+    )
     fig_faixa.update_layout(
         showlegend=False,
         xaxis_title="",
-        yaxis_title="Quantidade",
-        margin=dict(t=20, b=20, l=20, r=20),
-        height=350
+        yaxis_title="",
+        margin=dict(t=30, b=30, l=30, r=30),
+        height=350,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family='Inter', color='#2D2D2D'),
+        xaxis=dict(showgrid=False, showline=True, linecolor='#E5E7EB'),
+        yaxis=dict(showgrid=True, gridcolor='#F3F4F6', showline=False)
     )
     st.plotly_chart(fig_faixa, use_container_width=True)
 
 # ============================================================
 # GRÁFICO - RATING POR EMPRESA (LARGURA TOTAL)
 # ============================================================
-st.markdown("### 🎯 Rating por Empresa")
+st.markdown("### Rating por Empresa")
 
 df_com_rating = df_filtrado[df_filtrado['Rating'].notna()].copy()
 
 if len(df_com_rating) > 0:
     # Calcular altura dinâmica baseada no número de empresas
     num_empresas = len(df_com_rating)
-    altura_grafico = max(500, num_empresas * 35)
+    altura_grafico = max(500, num_empresas * 40)
+    
+    # Cores do padrão AVIN
+    cores_opiniao_grafico = {
+        'Positivo': '#4A7C59',
+        'Neutro': '#8B7355',
+        'Negativo': '#A85454',
+        'Atenção': '#C9A227',
+        'Não Avaliado': '#9CA3AF',
+        'Outros': '#6B7280'
+    }
     
     fig_scatter = px.bar(
         df_com_rating.sort_values('Rating', ascending=True),
         x='Rating',
         y='Empresa',
         color='Opiniao_Agregada',
-        color_discrete_map=cores_opiniao,
+        color_discrete_map=cores_opiniao_grafico,
         orientation='h',
         hover_data=['Tipo', 'Opiniao', 'Data']
+    )
+    fig_scatter.update_traces(
+        marker_line_color='#FFFFFF',
+        marker_line_width=1
     )
     fig_scatter.update_layout(
         yaxis_title="",
         xaxis_title="Rating (0-100)",
-        legend_title="Opinião",
-        margin=dict(t=20, b=20, l=20, r=20),
-        height=altura_grafico
+        legend_title="",
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            font=dict(size=10)
+        ),
+        margin=dict(t=50, b=30, l=20, r=20),
+        height=altura_grafico,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(family='Inter', color='#2D2D2D'),
+        xaxis=dict(
+            showgrid=True, 
+            gridcolor='#F3F4F6', 
+            showline=True, 
+            linecolor='#E5E7EB',
+            range=[0, 100]
+        ),
+        yaxis=dict(showgrid=False, showline=False)
     )
     st.plotly_chart(fig_scatter, use_container_width=True)
 else:
@@ -389,7 +504,7 @@ st.markdown("---")
 # ============================================================
 # TABELA DETALHADA
 # ============================================================
-st.markdown("### 📋 Detalhamento das Análises")
+st.markdown("### Detalhamento das Análises")
 
 # Preparar dados para tabela
 df_tabela = df_filtrado[['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa_Rating', 'Opiniao_Agregada', 'Opiniao']].copy()
@@ -416,7 +531,7 @@ st.dataframe(
 # ============================================================
 # DETALHES EXPANDÍVEIS
 # ============================================================
-st.markdown("### 📝 Conclusões Detalhadas")
+st.markdown("### Conclusões Detalhadas")
 
 for idx, row in df_filtrado.iterrows():
     if pd.notna(row['Conclusao']):
@@ -437,9 +552,8 @@ for idx, row in df_filtrado.iterrows():
 st.markdown("---")
 st.markdown(
     """
-    <div style='text-align: center; color: #6B7280; padding: 1rem;'>
-        📊 Dashboard de Crédito | 
-        Dados atualizados conforme planilha carregada
+    <div style='text-align: center; color: #9CA3AF; padding: 1rem; font-size: 0.85rem;'>
+        Dashboard de Crédito | Dados atualizados conforme planilha carregada
     </div>
     """,
     unsafe_allow_html=True
