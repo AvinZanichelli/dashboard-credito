@@ -135,6 +135,7 @@ def carregar_dados(arquivo):
         'Empresa / Emissão': 'Tipo',
         'Data de Envio': 'Data',
         'Rating - X/100': 'Rating',
+        'Rating Escala': 'Rating_Escala',
         'Opinião - Independente de pontuação de Rating': 'Opiniao',
         'Conclusão': 'Conclusao'
     }
@@ -512,10 +513,11 @@ st.markdown("---")
 st.markdown("### Detalhamento das Análises")
 
 # Preparar dados para tabela
-df_tabela = df_filtrado[['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa_Rating', 'Opiniao_Agregada', 'Opiniao']].copy()
+df_tabela = df_filtrado[['Empresa', 'Tipo', 'Data', 'Rating', 'Rating_Escala', 'Faixa_Rating', 'Opiniao_Agregada', 'Opiniao']].copy()
 df_tabela['Data'] = pd.to_datetime(df_tabela['Data']).dt.strftime('%d/%m/%Y')
 df_tabela['Rating'] = df_tabela['Rating'].apply(lambda x: int(x) if pd.notna(x) else '-')
-df_tabela.columns = ['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa', 'Opinião', 'Opinião Detalhada']
+df_tabela['Rating_Escala'] = df_tabela['Rating_Escala'].fillna('-')
+df_tabela.columns = ['Empresa', 'Tipo', 'Data', 'Rating', 'Escala', 'Faixa', 'Opinião', 'Opinião Detalhada']
 
 # Configurar exibição com estilo centralizado
 st.markdown("""
@@ -565,13 +567,16 @@ st.markdown("### Conclusões Detalhadas")
 
 for idx, row in df_filtrado.iterrows():
     if pd.notna(row['Conclusao']):
-        with st.expander(f"**{row['Empresa']}** | Rating: {row['Rating'] if pd.notna(row['Rating']) else 'N/A'} | {row['Opiniao_Agregada']}"):
-            col_info1, col_info2, col_info3 = st.columns(3)
+        rating_escala = row['Rating_Escala'] if 'Rating_Escala' in row and pd.notna(row['Rating_Escala']) else 'N/A'
+        with st.expander(f"**{row['Empresa']}** | Rating: {row['Rating'] if pd.notna(row['Rating']) else 'N/A'} ({rating_escala}) | {row['Opiniao_Agregada']}"):
+            col_info1, col_info2, col_info3, col_info4 = st.columns(4)
             with col_info1:
                 st.markdown(f"**Tipo:** {row['Tipo']}")
             with col_info2:
                 st.markdown(f"**Data:** {row['Data'].strftime('%d/%m/%Y') if pd.notna(row['Data']) else 'N/A'}")
             with col_info3:
+                st.markdown(f"**Escala:** {rating_escala}")
+            with col_info4:
                 st.markdown(f"**Opinião:** {row['Opiniao']}")
             st.markdown("---")
             st.markdown(row['Conclusao'])
