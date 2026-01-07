@@ -116,25 +116,6 @@ st.markdown("""
         border-top: 1px solid #E5E7EB;
         margin: 1.5rem 0;
     }
-    
-    /* Centralizar conteúdo das colunas na tabela */
-    [data-testid="stDataFrame"] td {
-        text-align: center !important;
-    }
-    
-    [data-testid="stDataFrame"] th {
-        text-align: center !important;
-    }
-    
-    div[data-testid="stDataFrameResizable"] [role="gridcell"] {
-        text-align: center !important;
-        justify-content: center !important;
-    }
-    
-    div[data-testid="stDataFrameResizable"] [role="columnheader"] {
-        text-align: center !important;
-        justify-content: center !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -533,21 +514,48 @@ st.markdown("### Detalhamento das Análises")
 # Preparar dados para tabela
 df_tabela = df_filtrado[['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa_Rating', 'Opiniao_Agregada', 'Opiniao']].copy()
 df_tabela['Data'] = pd.to_datetime(df_tabela['Data']).dt.strftime('%d/%m/%Y')
+df_tabela['Rating'] = df_tabela['Rating'].apply(lambda x: int(x) if pd.notna(x) else '-')
 df_tabela.columns = ['Empresa', 'Tipo', 'Data', 'Rating', 'Faixa', 'Opinião', 'Opinião Detalhada']
 
-# Configurar exibição
-st.dataframe(
-    df_tabela,
-    use_container_width=True,
-    height=400,
-    column_config={
-        "Rating": st.column_config.NumberColumn(
-            "Rating",
-            help="Rating de 0 a 100",
-            format="%.0f"
-        ),
-        "Data": st.column_config.TextColumn("Data"),
+# Configurar exibição com estilo centralizado
+st.markdown("""
+<style>
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        font-family: 'Inter', sans-serif;
     }
+    .styled-table thead tr {
+        background-color: #F9FAFB;
+        text-align: center;
+    }
+    .styled-table th {
+        padding: 12px;
+        text-align: center;
+        font-weight: 600;
+        color: #6B7280;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #E5E7EB;
+    }
+    .styled-table td {
+        padding: 10px 12px;
+        text-align: center;
+        border-bottom: 1px solid #F3F4F6;
+        color: #2D2D2D;
+    }
+    .styled-table tbody tr:hover {
+        background-color: #F9FAFB;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Converter para HTML com classe customizada
+st.markdown(
+    df_tabela.to_html(classes='styled-table', index=False, na_rep='-', escape=False),
+    unsafe_allow_html=True
 )
 
 # ============================================================
