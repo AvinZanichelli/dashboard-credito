@@ -28,6 +28,11 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
+    /* Ajuste do container principal */
+    .block-container {
+        padding-top: 3rem !important;
+    }
+    
     /* Header principal */
     .main-header {
         font-size: 2rem;
@@ -35,6 +40,7 @@ st.markdown("""
         color: #8B7355;
         margin-bottom: 0.25rem;
         letter-spacing: -0.5px;
+        margin-top: 0.5rem;
     }
     
     .sub-header {
@@ -104,16 +110,28 @@ st.markdown("""
         border-radius: 8px;
     }
     
-    /* Remover bordas extras */
-    .block-container {
-        padding-top: 2rem;
-    }
-    
     /* Dividers */
     hr {
         border: none;
         border-top: 1px solid #E5E7EB;
         margin: 1.5rem 0;
+    }
+    
+    /* Progress bar na tabela - cor verde #4A7C59 */
+    [data-testid="stDataFrame"] [role="progressbar"] > div {
+        background-color: #4A7C59 !important;
+    }
+    
+    [data-testid="stDataFrame"] progress {
+        accent-color: #4A7C59;
+    }
+    
+    [data-testid="stDataFrame"] progress::-webkit-progress-value {
+        background-color: #4A7C59 !important;
+    }
+    
+    [data-testid="stDataFrame"] progress::-moz-progress-bar {
+        background-color: #4A7C59 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -401,7 +419,7 @@ with col_graf2:
     
     cores_faixa = {
         'Alto (≥80)': '#4A7C59',     # Verde escuro
-        'Médio (65-79)': '#C9A227',  # Amarelo mostarda
+        'Médio (65-79)': '#8B7355',  # Dourado AVIN
         'Baixo (<65)': '#A85454',    # Vermelho sóbrio
         'Sem Rating': '#D1D5DB'      # Cinza claro
     }
