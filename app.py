@@ -116,6 +116,25 @@ st.markdown("""
         border-top: 1px solid #E5E7EB;
         margin: 1.5rem 0;
     }
+    
+    /* Centralizar conteúdo das colunas na tabela */
+    [data-testid="stDataFrame"] td {
+        text-align: center !important;
+    }
+    
+    [data-testid="stDataFrame"] th {
+        text-align: center !important;
+    }
+    
+    div[data-testid="stDataFrameResizable"] [role="gridcell"] {
+        text-align: center !important;
+        justify-content: center !important;
+    }
+    
+    div[data-testid="stDataFrameResizable"] [role="columnheader"] {
+        text-align: center !important;
+        justify-content: center !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
