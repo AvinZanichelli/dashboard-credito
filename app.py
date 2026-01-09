@@ -592,7 +592,7 @@ FOOTER_LOGO = "data:image/webp;base64,UklGRs4TAABXRUJQVlA4WAoAAAAgAAAAnwIAUgAASU
 st.markdown(
     f"""
     <div style='text-align: center; padding: 2rem 1rem 1rem 1rem;'>
-        <img src="{FOOTER_LOGO}" alt="AVIN | BTG Pactual" style="max-width: 460px; width: 115%;">
+        <img src="{FOOTER_LOGO}" alt="AVIN | BTG Pactual" style="max-width: 550px; width: 138%;">
     </div>
     """,
     unsafe_allow_html=True
